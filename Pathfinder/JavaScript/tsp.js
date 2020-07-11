@@ -183,7 +183,7 @@ async function travellingsalesman() {
                 }
             }
 
-            end = destination[b];
+            var end = destination[b];
             var pqueue = new priority_queue();
             destination[a].g = 0;
             destination[a].f = Math.abs(destination[a].i - end.i) + Math.abs(destination[a].j - end.j);
