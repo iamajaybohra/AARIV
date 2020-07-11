@@ -1,57 +1,82 @@
 <!DOCTYPE html>
 <html lang="">
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pathfinder</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="style.css" />
-</head>
-
-<body>
-    <div id="algorithm_panel" class="panel right_panel">
-    <header><h2 class="header_title">Algorithm</h2></header>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pathfinder</title>
     
-    <div class="form-group">
-    <select class="form-control" id="sel1">
-      <option value="Astar">A*</option>
-      <option value="BFS">Breadth First Search </option>
-      <option value="DFS">Depth First Search</option>
-      <option value="Djisktra">Djikstra</option>
-    </select>
-    </div>
-    <header><h2 class="header_title">Maze Generation Algorithm</h2></header>
-    <div class="form-group">
-    <select class="form-control" id="sel1">
-      <option value="Random">Random</option>
-      <option value="Recursive">Recursive </option>
-      <option value="Recursive_Vertical">Recursive_Vertical</option>
-      <option value="Recursive_Horizontal">Recursive_Horizontal</option>
-    </select>
-    </div>
-    <header><h2 class="header_title">Animation Speed</h2></header>
-    <div class="form-group">
-    <select class="form-control" id="sel1">
-      <option value="fast">Fast</option>
-      <option value="medium">Medium</option>
-      <option value="slow">Slow</option>
-    </select>
-    </div>
-    </div>
-    <div id="play_panel" class="panel right_panel">
-      <button id="button1" class="control_button">Start Search</button>
-      <button id="button2" class="control_button">Pause Search</button>
-      <button id="button3" class="control_button">Clear Walls</button>
-    </div>
-    
-    <script src="../p5.js"></script>
-    <!--The above js file is for including PS5 js framework! -->
-    <!--<script src="../addons/p5.sound.min.js"></script>-->
-    <script src="sketch.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <link rel="stylesheet" href="style.css"/>
+    <script src = "JavaScript/p5.js"></script>
+    <script src = "JavaScript/sweet.min.js"></script>
+  </head>
 
-</body>
-
-</html>
+  <body>
+    <h1 id = "heading">PATHFINDER</h1>
+      <div id="algorithm_panel" class="panel right_panel">
+          <input type="radio" id="single_dest" name="algo" value="single_dest">
+          <label for="single_dest">Single Destination</label><br>
+          
+          <div class="form-group">
+            <select class="form-control" id="algorithm-panel">
+              
+              <option value="Astar">A*</option>
+              <option value="DJ">Dijkstra</option>
+ 
+            </select>
+          </div>
+          
+          <input type = "radio" id = "multi_dest" name = "algo" value = "multi_dest">
+          <label for = "multi_dest">Multiple Destinations</label><br>
+        <hr>
+        <header><h2 class="header_title">Diagonals</h2></header>
+        
+        <div class="form-group">
+          <select class="form-control" id="diagonal-panel">
+            
+            <option value="on">Allowed</option>
+            <option value="off">Not Allowed</option>
+            
+          </select>
+        </div>
+      </div>
+      
+      <div id="play_panel" class="panel right_panel">
+        
+        <button id="strt" class="control_button" type="submit" >Start Search</button>
+        <button id="clr" class="control_button" type="submit" >Clear Grid</button>
+        <button id="can" class="control_button" type="submit" >Cancel Search</button>
+      
+      </div>
+      <div id="cursor1"></div>
+      <div id="cursor2"></div>
+      
+      <script>
+        swal({
+            title: "Instrunctions!!",
+            text: "1.Click within the white grid and drag your mouse to draw obstacles.\n2.Drag the green node to set the start position.\n3.If Multiple destinations is ON,double click on any white grid cell to make it a destination and again double click to undo.\n4.If Single Destination is ON select the Algorithm from dropdown.\n 5.Drag the red node(s) to set the end position.\n6.Click Start Search in the upper-right corner to start the animation.",
+            button: "OK",
+        });
+        var yz = document.getElementsByName("algo");
+        yz[0].checked = true;        
+        document.getElementById("can").disabled = true;
+        var abort=false;
+        var first_time=3;
+        var ok = false;
+        var only=false;
+      </script>
+      
+      <script src = "JavaScript/Grid.js"></script>
+      <script src = "JavaScript/mEvent.js"></script>
+      <script src = "JavaScript/Queue.js"></script>
+      <script src = "JavaScript/Dijkstra.js"></script>
+      <script src = "JavaScript/Astar.js"></script>
+      <script src = "JavaScript/DFS.js"></script>
+      <script src = "JavaScript/main.js"></script>
+      <script src = "JavaScript/tsp.js"></script>
+      </body>
+</html>  
