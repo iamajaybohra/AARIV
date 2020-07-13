@@ -1,0 +1,218 @@
+//Grid Implementation
+
+var row = 21;
+var col = 45;
+
+var grid = new Array(col);
+var h, w;
+
+class Cell {
+
+    //Defining property of each Cell
+    constructor(i, j) {
+        this.i = i;
+        this.j = j;
+
+        this.f = Infinity;
+        this.h = Infinity;
+        this.g = Infinity;
+
+        this.wall = false;
+        this.visited = false;
+        this.end = false;
+        this.neighbours = [];
+        this.camefrom = null;
+    }
+
+    //For displaying 
+    showyou(col) {
+        fill(col);
+
+        if (this.wall)
+            fill(100, 100, 100);
+        if (this.end)
+            fill(255, 0, 0);
+
+        strokeWeight(0.1);
+        stroke(100, 100, 100);
+        rect(this.i * w, this.j * h, w, h, 5);
+    }
+
+    //Adding neighbours of current Cell
+    addneighbours(grid) {
+        var i = this.i;
+        var j = this.j;
+
+        if (i < col - 1 && grid[i + 1][j].wall == false) {
+            this.neighbours.push(grid[i + 1][j]);
+        }
+        if (i > 0 && grid[i - 1][j].wall == false) {
+            this.neighbours.push(grid[i - 1][j]);
+        }
+        if (j < row - 1 && grid[i][j + 1].wall == false) {
+            this.neighbours.push(grid[i][j + 1]);
+        }
+        if (j > 0 && grid[i][j - 1].wall == false) {
+            this.neighbours.push(grid[i][j - 1]);
+        }
+
+        //If diagonals in path is allowed,add them as neighbours also
+        var diag = $("#diagonal-panel option:selected")
+        if (diag.text() == "Allowed") {
+
+            if (i < col - 1 && j < row - 1 && grid[i + 1][j + 1].wall == false && !(grid[i + 1][j].wall == true && grid[i][j + 1].wall == true)) {
+                this.neighbours.push(grid[i + 1][j + 1]);
+            }
+            if (i > 0 && j > 0 && grid[i - 1][j - 1].wall == false && !(grid[i - 1][j].wall == true && grid[i][j - 1].wall == true)) {
+                this.neighbours.push(grid[i - 1][j - 1]);
+            }
+            if (i > 0 && j < row - 1 && grid[i - 1][j + 1].wall == false && !(grid[i - 1][j].wall == true && grid[i][j + 1].wall == true)) {
+                this.neighbours.push(grid[i - 1][j + 1]);
+            }
+            if (j > 0 && i < col - 1 && grid[i + 1][j - 1].wall == false && !(grid[i + 1][j].wall == true && grid[i][j - 1].wall == true)) {
+                this.neighbours.push(grid[i + 1][j - 1]);
+            }
+        }
+    }
+}
+
+//This is the root of this complete Project!!.
+function setup() {
+
+    //Grid Canvas
+    createCanvas(1335, 585);
+
+    var canvas = document.getElementById("defaultCanvas0");
+
+    var ctx = canvas.getContext('2d');
+    ctx.shadowColor = "grey";
+
+    h = height / row;
+    w = width / col;
+
+    for (var i = 0; i < col; i++) grid[i] = new Array(row);
+
+    //Assigning default property to each cell
+    for (var i = 0; i < col; i++) {
+        for (var j = 0; j < row; j++) {
+
+            grid[i][j] = new Cell(i, j);
+            grid[i][j].showyou(color(255));
+        }
+    }
+
+    //Default start and End
+    strt = grid[18][10];
+    end = grid[25][10];
+
+    strt.wall = false;
+    end.wall = false;
+
+    strt.showyou(color(0, 255, 0));
+    end.showyou(color(255, 0, 0));
+}
+
+//This function repeats again and again.Provided by p5.js ,Javascript Library for creative coding!! 
+async function draw() {
+
+    //If Single Destination is Selected Keep the dropdown disable
+    var xd = document.getElementsByName("algo");
+
+    if (xd[0].checked) {
+
+        document.getElementById("algorithm-panel").disabled = false;
+
+        //If transferring from Multiple destinations to Single Destination Option,Clear the Grid
+        if (only) {
+
+            for (var i = 0; i < col; i++) {
+                for (var j = 0; j < row; j++) {
+                    grid[i][j].end = false;
+                    grid[i][j].showyou(color(255));
+
+                }
+            }
+
+            strt.showyou(color(0, 255, 0));
+            end.showyou(color(255, 0, 0));
+            only = false;
+        }
+    } else {
+        only = true;
+        document.getElementById("algorithm-panel").disabled = true;
+    }
+}
+
+//Notification to user in the form of pop-up
+
+//Path Found
+function success(c) {
+    swal({
+        title: "Congratulations!!",
+        text: "Found Path with length " + c,
+        icon: "success",
+        button: "OK",
+    });
+}
+
+//No path found
+function fail() {
+    swal({
+        title: "Sorry",
+        text: "No Path Found!",
+        icon: "error",
+        button: "no!",
+    });
+}
+
+//Instrunctions
+function instruction() {
+    swal({
+        title: "Please Read!!",
+        text: "1.Click within the white grid and drag your mouse to draw obstacles.\n\n2.Drag the green node to set the start position.\n\n3.If Multiple destinations is ON (see on right panel),double click on any white grid cell to make it a destination,or single click on any white grid cell to make it a wall and again single click on it to undo.\n\n4.If Single Destination is ON,wall appears by single click only, and do select the Algorithm from right panel's dropdown.\n\n 5.Drag the red node(s) to set the end position.\n\n6.Click Start Search in the right panel to start the animation.",
+        button: "OK",
+    });
+}
+
+//Notification of Low Battery
+function battery_low() {
+    swal({
+        title: "Sorry!!",
+        text: "Battery is too Low.Recharge the battery first!!",
+        icon: "error",
+        button: "OK",
+    });
+}
+
+//Recharge battery
+function recharge() {
+    if (battery == 100) {
+        swal("Battery Already Full!!");
+    } else {
+        battery = 100;
+        move();
+    }
+}
+
+//Animate the current level of battery 
+function display_battery() {
+
+    var elem = document.getElementById("myBar");
+    var width = 1;
+    var id = setInterval(frame, 10);
+
+    if (battery <= 25)
+        elem.style.background = 'red';
+
+    function frame() {
+        if (width >= battery) {
+            clearInterval(id);
+            ii = 0;
+        } else {
+            width++;
+            elem.style.width = width + "%";
+        }
+    }
+
+
+}
