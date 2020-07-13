@@ -24,13 +24,14 @@
           <div class="form-group">
             <select class="form-control" id="algorithm-panel">
               
-              <option value="Astar">A*</option>
-              <option value="DJ">Dijkstra</option>
+              <option value = "Astar">A*</option>
+              <option value = "DJ">Dijkstra</option>
+              <option value = "ran">Range</option>
  
             </select>
           </div>
           
-          <input type = "radio" id = "multi_dest" name = "algo" value = "multi_dest">
+          <input type = "radio" id = "multi-dest" name = "algo" value = "multi_dest">
           <label for = "multi_dest">Multiple Destinations</label><br>
         <hr>
         <header><h2 class="header_title">Diagonals</h2></header>
@@ -65,8 +66,7 @@
         yz[0].checked = true;        
         document.getElementById("can").disabled = true;
         var abort=false;
-        var first_time=3;
-        var ok = false;
+        var first_time = 3;
         var only=false;
       </script>
       
@@ -75,8 +75,8 @@
       <script src = "JavaScript/Queue.js"></script>
       <script src = "JavaScript/Dijkstra.js"></script>
       <script src = "JavaScript/Astar.js"></script>
-      <script src = "JavaScript/DFS.js"></script>
       <script src = "JavaScript/main.js"></script>
       <script src = "JavaScript/tsp.js"></script>
+      <script src = "JavaScript/knapSack.js"></script>
       </body>
 </html>  
