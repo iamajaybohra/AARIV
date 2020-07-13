@@ -1,17 +1,23 @@
 var col = 45;
 var row = 21;
 
-var vis = new Array(col);
-var dp = new Array(col);
-for(var i = 0 ; i < col ; i++ ) dp[i] = new Array(row);
-for(var i = 0 ; i < col ; i++ ) vis[i] = new Array(row);
+
 
 async function Rem()
 {
+    var vis = new Array(col);
+    
+    var dp = new Array(col);
+    
+    for(var i = 0 ; i < col ; i++ ) dp[i] = new Array(row);
+    
+    for(var i = 0 ; i < col ; i++ ) vis[i] = new Array(row);
+    
     for(var i = 0 ; i < col ; i++ ) {
         for(var j = 0 ; j < row ; j++ ) {
             dp[i][j] = -1;
             vis[i][j] = false;
+            grid[i][j].neighbours = [];
         }
     }
 
