@@ -8,6 +8,12 @@ $(document).ready(function() {
         var x = document.getElementsByName("algo");
 
         if (x[0].checked) {
+
+            for(var i = 0 ; i < col ; i++ ) {
+                for(var j = 0 ; j < row ; j++ ) {
+                    grid[i][j].end = false;
+                }
+            }
             var value = $("#algorithm-panel option:selected");
             switch (value.text()) {
                 case "Dijkstra":
@@ -17,6 +23,9 @@ $(document).ready(function() {
                 case "A*":
                     Astar();
                     break;
+                case "Range" : Rem();
+                break;
+                
                 default:
                     swal({
                         text: "Please Select a Algorithm to Start !!",
