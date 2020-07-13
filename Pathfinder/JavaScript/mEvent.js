@@ -1,30 +1,35 @@
 $(document).on("mousedown", function(event) {
-
+    //Not the First Click After The Algorihtm
     if (first_time != 3) {
-
+        
+        //Clear Grid Button Not Disabled
         if (!document.getElementById("clr").disabled) {
 
             if (first_time == 1) {
 
+                //Cells to Deafault Value
                 for (var i = 0; i < col; i++) {
                     for (var j = 0; j < row; j++) {
                         grid[i][j].showyou(color(255));
                     }
                 }
 
-                strt.showyou(color(0, 255, 0))
+                strt.showyou(color(0, 255, 0));
                 end.showyou(color(255, 0, 0));
 
                 first_time = 0;
             }
+
             //Finding Cell Coordinates!
             //X- coordinate
             var xc = Math.floor(mouseX / w);
             //Y- coordinate
             var yc = Math.floor(mouseY / h);
+            
+            //For checking if user has choosed Multi-Dest or Single-Dest
             var yz = document.getElementsByName("algo");
 
-            //Check if the cell is currently a wall!
+            //Check if the cell is currently a wall and A valid Cell
             if (xc >= 0 && yc >= 0 && xc < col && yc < row && grid[xc][yc].end == true) {
 
                 grid[xc][yc].end = false;
@@ -50,6 +55,8 @@ $(document).on("mousedown", function(event) {
 
             } else if (xc >= 0 && yc >= 0 && xc < col && yc < row && grid[xc][yc].wall == true && yz[1].checked) {
 
+                //Mark Cell as Destination for inCase of Multi-dest 
+                //Color The Cell Red
                 grid[xc][yc].wall = false;
                 grid[xc][yc].end = true;
                 grid[xc][yc].showyou(color(255));
@@ -110,8 +117,10 @@ $(document).on("mousedown", function(event) {
                     });
 
                 } else if (grid[xc][yc] == strt) {
-                    //The Current Cell is Source or Dstination
+                    //The Current Cell is Source 
                     //Move the Source or Destination Position 
+
+                    //For transition Effects
                     $(document).on("mousemove", function(ev) {
                         document.getElementById('cursor1').style.display = 'block';
                         var cursor = document.getElementById('cursor1');
@@ -128,6 +137,7 @@ $(document).on("mousedown", function(event) {
                         var yf = Math.floor(mouseY / h);
                         document.getElementById('cursor1').style.display = 'none';
 
+                        //Mark the Cell as new Source
                         if (xf >= 0 && yf >= 0 && xf < col && yf < row && grid[xf][yf].wall != true && grid[xf][yf] != end) {
                             grid[xc][yc].wall = false;
                             grid[xc][yc].visited = false;
@@ -141,6 +151,9 @@ $(document).on("mousedown", function(event) {
                         $(this).unbind("mouseup mousemove");
                     });
                 } else if (grid[xc][yc] == end) {
+
+                    //If the Current Cell is Destination
+                    //For Transition
                     $(document).on("mousemove", function(ev) {
 
                         document.getElementById('cursor2').style.display = 'block';
@@ -152,12 +165,14 @@ $(document).on("mousedown", function(event) {
 
                     });
 
+
                     $(document).on("mouseup", function(ev) {
 
                         var xf = Math.floor(mouseX / w);
                         var yf = Math.floor(mouseY / h);
                         document.getElementById('cursor2').style.display = 'none';
-
+                        
+                        //Make the Cell the New Destination
                         if (xf >= 0 && yf >= 0 && xf < col && yf < row && grid[xf][yf].wall != true && grid[xf][yf] != strt) {
                             grid[xc][yc].wall = false;
                             grid[xc][yc].visited = false;
@@ -187,11 +202,15 @@ $(document).on("mousedown", function(event) {
                     }
 
                 });
+
+                //Stop the mousemove and mouseup
+                //Ready for Another MouseClick and MouseMove
                 $(document).on("mouseup", function(event) {
                     $(this).unbind("mouseup mousemove");
                 });
             }
         }
-    } else
+    } else {
         first_time = 1;
+    }
 });
