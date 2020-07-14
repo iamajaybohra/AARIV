@@ -124,7 +124,7 @@ async function Dijkstra() {
                 grid[que.items[i].row][que.items[i].col].showyou(color(177, 250, 82));
 
             for (var i = 0; i < closedSet.length; i++)
-                grid[cSet[i].row][cSet[i].col].showyou(color(74, 247, 244));
+                grid[closedSet[i].row][closedSet[i].col].showyou(color(74, 247, 244));
 
             strt.showyou(color(0, 255, 0));
             end.showyou(color(255, 0, 0));
