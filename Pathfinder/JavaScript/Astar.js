@@ -71,7 +71,7 @@ async function Astar() {
             }
 
             //if enough battery is available
-            if (battery - (0.1 * (path.length - 1)) > 10) {
+            if (battery - (0.5 * (path.length - 1)) >= 0) {
                 noFill();
                 stroke(255, 245, 102);
                 strokeWeight(w / 5);
@@ -82,7 +82,7 @@ async function Astar() {
                 endShape();
                 var c = path.length;
                 c--;
-                battery -= 0.1 * c;
+                battery -= 0.5 * c;
                 success(c);
                 display_battery();
             } else {

@@ -141,8 +141,15 @@ async function draw() {
         only = true;
         document.getElementById("algorithm-panel").disabled = true;
     }
-}
 
+    var algo = document.getElementsByName("algo");
+
+    if (algo[1].checked && remin) {
+        remin = false;
+        remind();
+
+    }
+}
 //Notification to user in the form of pop-up
 
 //Path Found
@@ -169,8 +176,26 @@ function fail() {
 function instruction() {
     swal({
         title: "Please Read!!",
-        text: "1.Click within the white grid and drag your mouse to draw obstacles.\n\n2.Drag the green node to set the start position.\n\n3.If Multiple destinations is ON (see on right panel),double click on any white grid cell to make it a destination,or single click on any white grid cell to make it a wall and again single click on it to undo.\n\n4.If Single Destination is ON,wall appears by single click only, and do select the Algorithm from right panel's dropdown.\n\n 5.Drag the red node(s) to set the end position.\n\n6.Click Start Search in the right panel to start the animation.",
+        text: "1.Click within the white grid and drag your mouse to draw obstacles.\n\n2.Drag the green node to set the start position.\n\n3.Drag the red node to set the end position.\n\n4.Selecting Single Destination( see Right Panel ) will find the shortest path between one source and one destination\n\n5.Select Algorithm from dropdown,if Single Destination option is selected\n\n6.Selecting Multiple Destinations( see Right Panel )will find the shortest path visiting every destination and returning to the source.\n\n7.Click Start Search in the right panel to start the animation.\n\n8.Click on the 'Mars Rover Range' Button (top left) to know the farthest distance Mars Rover can travel with current battery",
+        button: "Let's Go",
+    });
+
+}
+
+function remember() {
+    swal({
+        title: "Remember",
+        text: "Each traversal will cost some Battery Power.Recharge it before it runs out of power",
         button: "OK",
+    });
+}
+
+//Reminder when Multiple Destinations is selected
+function remind() {
+    swal({
+        title: "Please Read!!",
+        text: "In Multiple Destinations Case: \n\n First Click on white Cell will convert it to a Wall\n\nSecond click on same cell will convert it into Destination\n\nThird Click will make it white Cell again",
+        button: "Let's Go",
     });
 }
 
@@ -190,29 +215,34 @@ function recharge() {
         swal("Battery Already Full!!");
     } else {
         battery = 100;
-        move();
+        display_battery();
     }
 }
 
 //Animate the current level of battery 
 function display_battery() {
+    var ii = 0;
+    if (ii == 0) {
+        ii = 1;
+        var elem = document.getElementById("myBar");
+        var width = 0;
+        var id = setInterval(frame, 10);
 
-    var elem = document.getElementById("myBar");
-    var width = 1;
-    var id = setInterval(frame, 10);
+        if (battery <= 25)
+            elem.style.background = 'red';
+        else
+            elem.style.background = '#ADFF2F';
 
-    if (battery <= 25)
-        elem.style.background = 'red';
-
-    function frame() {
-        if (width >= battery) {
-            clearInterval(id);
-            ii = 0;
-        } else {
-            width++;
+        function frame() {
             elem.style.width = width + "%";
+            width++;
+
+            if (width > battery) {
+                clearInterval(id);
+                ii = 0;
+            }
+
+
         }
     }
-
-
 }

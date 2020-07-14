@@ -80,7 +80,7 @@ async function Dijkstra() {
             }
 
             //if enough battery is available,then traverse
-            if (battery - (0.1 * (path.length - 2)) >= 10) {
+            if (battery - (0.5 * (path.length - 2)) >= 0) {
 
                 noFill();
                 stroke(255, 245, 102);
@@ -92,7 +92,7 @@ async function Dijkstra() {
                 }
                 success(path.length - 2);
                 endShape();
-                battery -= 0.1 * (path.length - 2);
+                battery -= 0.5 * (path.length - 2);
                 display_battery();
             } else {
                 battery_low();

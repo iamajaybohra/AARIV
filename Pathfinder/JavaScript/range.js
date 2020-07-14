@@ -47,12 +47,12 @@ async function Rem() {
     var que = new Queue();
     var cnt = 0;
     que.enqueue(new QItem(strt.i, strt.j, 0));
-
+    console.log(battery);
     while (!que.isEmpty()) {
         var p = que.front();
         que.dequeue();
 
-        if (p.dist > battery) continue;
+        if (p.dist > (2 * battery - 1)) continue;
         else {
             var neigh = grid[p.row][p.col].neighbours; // Contains Neighbour of Grid[i][j]
             // Check in all the Direction of the Cell
@@ -78,6 +78,6 @@ async function Rem() {
     document.getElementById("clr").disabled = false;
     document.getElementById("strt").disabled = false;
     document.getElementById("can").disabled = true;
-    first_time = 3;
+    first_time = 2;
 
 }

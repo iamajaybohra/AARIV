@@ -4,6 +4,8 @@ $(document).ready(function() {
 
     //if start search button is click
     $('#strt').click(function() {
+        var elem = document.getElementById("butt");
+        elem.value = "Mars Rover Range";
 
         document.getElementById("clr").disabled = true;
         document.getElementById("strt").disabled = true;
@@ -45,6 +47,7 @@ $(document).ready(function() {
         }
         //If Multiple Destinations is selected
         else if (x[1].checked) {
+            reminder = true;
             calc_dis();
         }
     });
