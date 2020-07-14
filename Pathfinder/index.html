@@ -21,7 +21,7 @@
       <h1 id = "heading">PATHFINDER</h1>
         
           <div id="battery">
-              <input type="button" onclick="Rem()" id="butt" style="background-color:white;margin-left:100px;width:150px;" value="Mars Rover Range"></input>
+              <span title="To know the farthest Mars Rover can travel with current Battery"><input type="button" onclick="Rem()" id="butt" style="radius:5px;background-color:white;margin-left:100px;width:150px;" value="Mars Rover Range"></input></span>
               <label style="margin-left:5%;color:white;display:inline-block;font-size:20px">Battery:</label>
               
               <div id="myProgress">
@@ -84,6 +84,7 @@
           <script>
           
             instruction();
+            
             var yz = document.getElementsByName("algo");
             yz[0].checked=true;        
             document.getElementById("can").disabled = true;
@@ -94,6 +95,7 @@
             var only=false;
             var battery=100;
             
+            var remin=true;
             display_battery();
         
           </script>
