@@ -1,26 +1,28 @@
-# PathFind
-Finding path in 2D maze\
+#PathFinder
 
-Implemented:\ 
-1.Astar Algo\
-2.Dijkstra Algo\
+Microsoft Engage 2020 \
 
-Added:\
-1.Diagonals select option\
-2.Clear Grid and Cancel Search Button\ 
-3.1.Deactivation of Search and Clear button during search\
-4.Removal of previous path on just clicking once\
-5.Conformation popup
-6.Transition when moving initial or final button
-7.Added TSP file
-8.Added background image
+Team : Aariv \
 
-Improved:\
-1.converted functions to class\
-2.Diagonal path code.If top and right cells are wall then it is practically not possible to make diagonal between them\ 
+Team Members :
+1.Ajay Bohra @ https://github.com/iamajaybohra
+2.Amit Joshi @ https://github.com/amitjoshi438
+3.Deepak Tiwari @ https://github.com/deeparmyschool456
+4.Kunal Khanra @ https://github.com/KUNAL-FALCON \
 
-Bugs Fixes:\ 
-1.Microsoft Edge Compatible\
-2.Fixed bug that was causing memory out error if we run Dijkstra before Astar
-3.Now cannot draw anyting inbetween search is happening
+Base Project:
+To find the shortest path from a starting node to ending node,considering obstacles also.
+
+Implemented:\ 1.Single Source-Single Destination: \ i)Astar Algo
+ii)Dijkstra Algo
+2.Single Source-Multiple destinations:
+i)Held-Karp Algo
+
+Fun Ideas:
+1.Used the concept of Mars Rover Battery.Each traversal will cost some battery power.If battery is low,you have to first recharge it!!
+2.To show the farthest distance Mars Rover can travel considering the remaining battery power. \
+
+Through this Project,we learned a lot!! \
+
+“The more I live, the more I learn. The more I learn, the more I realizes, the less I know.” – Michel Legrand \
 
