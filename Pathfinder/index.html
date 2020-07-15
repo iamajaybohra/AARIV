@@ -1,82 +1,108 @@
+<!--Front End Code-->
+
 <!DOCTYPE html>
 <html lang="">
 
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pathfinder</title>
-    
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
-    <link rel="stylesheet" href="style.css"/>
-    <script src = "JavaScript/p5.js"></script>
-    <script src = "JavaScript/sweet.min.js"></script>
-  </head>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pathfinder</title>
+        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+        <link rel="stylesheet" href="style.css"/>
+        <link rel = "stylesheet" href = "buttons.css">
+        
+    </head>
 
-  <body>
-    <h1 id = "heading">PATHFINDER</h1>
-      <div id="algorithm_panel" class="panel right_panel">
-          <input type="radio" id="single_dest" name="algo" value="single_dest">
-          <label for="single_dest">Single Destination</label><br>
-          
-          <div class="form-group">
-            <select class="form-control" id="algorithm-panel">
+    <body>
+
+      <h1 id = "heading">PATHFINDER</h1>
+        
+          <div id="battery" style="margin-bottom: 5px;">
               
-              <option value = "Astar">A*</option>
-              <option value = "DJ">Dijkstra</option>
-              <option value = "ran">Range</option>
- 
-            </select>
+              <span  title="To know the farthest Mars Rover can travel with current Battery">
+                <input class = "hvr-float-shadow" type="button" onclick="Rem()" id="butt" value="Mars Rover Range"></input>
+              </span>
+              <label style="margin-left:2%; margin-right :2%;color:white;display:inline-block;font-size:20px">Battery  : </label>
+              
+              <div id="myProgress">
+                <div id="myBar"></div>
+              </div>
+              
+              <button class = "hvr-float-shadow" onclick = "recharge()" style="width:100px;">Recharge</button>
           </div>
           
-          <input type = "radio" id = "multi-dest" name = "algo" value = "multi_dest">
-          <label for = "multi_dest">Multiple Destinations</label><br>
-        <hr>
-        <header><h2 class="header_title">Diagonals</h2></header>
-        
-        <div class="form-group">
-          <select class="form-control" id="diagonal-panel">
+          <div id="algorithm_panel" class="panel right_panel">
+              
+              <input type="radio" id="single_dest" name="algo" value="single_dest">
+              <label for="single_dest">Single Destination</label><br>
+              
+              <div class="form-group">
+                <select class="form-control" id="algorithm-panel">
+                  
+                  <option value="Astar">A*</option>
+                  <option value="DJ">Dijkstra</option>
+                </select>
+              </div>
+              
+              <input type = "radio" id = "multi_dest" name = "algo" value = "multi_dest">
+              <label for = "multi_dest">Multiple Destinations</label><br>
+            <hr>
+            <header><h2 class="header_title">Diagonals</h2></header>
             
-            <option value="on">Allowed</option>
-            <option value="off">Not Allowed</option>
+            <div class="form-group">
+              <select class="form-control" id="diagonal-panel">
+                
+                <option value="on">Allowed</option>
+                <option value="off">Not Allowed</option>
+                
+              </select>
+            </div>
+          </div>
+          
+          <div id="play_panel" class="panel right_panel">
             
-          </select>
-        </div>
-      </div>
-      
-      <div id="play_panel" class="panel right_panel">
+            <button id="strt" class="control_button" type="submit" >Start Search</button>
+            <button id="clr" class="control_button" type="submit" >Clear Grid</button>
+            <button id="can" class="control_button" type="submit" >Cancel Search</button>
+          
+          </div>
+          
+          <div id="cursor1"></div>
+          <div id="cursor2"></div>
+          
+          <script src = "JavaScript/p5.js"></script>
+          <script src = "JavaScript/sweet.min.js"></script>
+          <script src = "JavaScript/Grid.js"></script>
+          <script src = "JavaScript/mEvent.js"></script>
+          <script src = "JavaScript/Queue.js"></script>
+          <script src = "JavaScript/Dijkstra.js"></script>
+          <script src = "JavaScript/Astar.js"></script>
+          <script src = "JavaScript/main.js"></script>
+          <script src = "JavaScript/tsp.js"></script>
+          <script src = "JavaScript/range.js"></script>
+          
+          <script>
+          
+            instruction();
+            
+            var yz = document.getElementsByName("algo");
+            yz[0].checked=true;        
+            document.getElementById("can").disabled = true;
+            
+            var abort=false;
+            var first_time=3;
+            var ok = false;
+            var only=false;
+            var battery=100;
+            
+            var remin=true;
+            display_battery();
         
-        <button id="strt" class="control_button" type="submit" >Start Search</button>
-        <button id="clr" class="control_button" type="submit" >Clear Grid</button>
-        <button id="can" class="control_button" type="submit" >Cancel Search</button>
+          </script>
       
-      </div>
-      <div id="cursor1"></div>
-      <div id="cursor2"></div>
-      
-      <script>
-        swal({
-            title: "Instrunctions!!",
-            text: "1.Click within the white grid and drag your mouse to draw obstacles.\n2.Drag the green node to set the start position.\n3.If Multiple destinations is ON,double click on any white grid cell to make it a destination and again double click to undo.\n4.If Single Destination is ON select the Algorithm from dropdown.\n 5.Drag the red node(s) to set the end position.\n6.Click Start Search in the upper-right corner to start the animation.",
-            button: "OK",
-        });
-        var yz = document.getElementsByName("algo");
-        yz[0].checked = true;        
-        document.getElementById("can").disabled = true;
-        var abort=false;
-        var first_time = 3;
-        var only=false;
-      </script>
-      
-      <script src = "JavaScript/Grid.js"></script>
-      <script src = "JavaScript/mEvent.js"></script>
-      <script src = "JavaScript/Queue.js"></script>
-      <script src = "JavaScript/Dijkstra.js"></script>
-      <script src = "JavaScript/Astar.js"></script>
-      <script src = "JavaScript/main.js"></script>
-      <script src = "JavaScript/tsp.js"></script>
-      <script src = "JavaScript/knapSack.js"></script>
-      </body>
+    </body>
 </html>  

@@ -1,19 +1,19 @@
-//Djikstar Algorihtm
+//Dijkstra ALgorithm Implementation :)
 
+//function for producing delay in execution
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// AloGorithm Starts From here
+//Algorithm Starts here
 async function Dijkstra() {
-    
-    //Hold Every Cell that Are yet to be Visited
+
+    //hold cells that are yet to be visited
     var que = new Queue();
 
-    /**
-     * Give Every Cell its Default Values 
-     * Except Walls 
-     */
+    var ok = false;
+
+    //Every time algorithm runs,the cells are loaded with default values
     for (var i = 0; i < col; i++) {
         for (var j = 0; j < row; j++) {
 
@@ -24,23 +24,25 @@ async function Dijkstra() {
         }
     }
 
-    //Give each Cell its Neighbour in all Direction
+    //Adding reachable neighbours of every cell.Why?.because the user may have added a new wall before running algo.
     for (var i = 0; i < col; i++) {
         for (var j = 0; j < row; j++) {
             grid[i][j].addneighbours(grid);
         }
     }
 
-    que.enqueue(new QItem(strt.i, strt.j, 0)); //Contains Cell that are to be visited
+    //Inserting the source cell in the queue
+    que.enqueue(new QItem(strt.i, strt.j, 0));
 
-    var cSet = []; //Contains All the Cells that Are visited
+    //Array for keeping the visited cell
+    var closedSet = [];
 
     var check = false;
 
+    //While all the cells have been traversed or the END has been found 
     while (!que.isEmpty()) {
 
-        //If the User Clicks The Cancel Search Button
-        //Cancel the Search & Make every cell to its Default values
+        //if the user clicks Cancel Search,abort=true
         if (abort) {
             abort = false;
             for (var i = 0; i < col; i++) {
@@ -54,40 +56,59 @@ async function Dijkstra() {
 
         var p = que.front();
         que.dequeue();
-        cSet.push(p);
+        closedSet.push(p);
 
-        //If Destination is Found
+        //Hurrah!! We reached our destination
         if (grid[p.row][p.col] === end) {
+
             check = true;
             var x = grid[p.row][p.col];
 
-            //To Show the Path
-            noFill();
-            stroke(255, 245, 102);
-            strokeWeight(w / 7);
-            beginShape(); // Drawing of Path starts from here
-            vertex(x.i * w + w / 2, x.j * h + h / 2); 
-            var cnt = 1; // Shows the Length of Path
-            x = x.camefrom;
+            var path = [];
+            var temp = x;
+            path.push(x);
+
+            //Extracting the minimum cost path
             while (true) {
-                vertex(x.i * w + w / 2, x.j * h + h / 2);
-                x = x.camefrom;
-                cnt++;
-                if (x == strt || x == null) {
-                    vertex(x.i * w + w / 2, x.j * h + h / 2);
+
+                path.push(temp.camefrom);
+                temp = temp.camefrom;
+                if (temp == strt || x == null) {
+                    path.push(temp);
                     break;
                 }
             }
-            endShape();
-            success(cnt); //Show a Message of Success
+
+            //if enough battery is available,then traverse
+            if (battery - (0.5 * (path.length - 2)) >= 0) {
+
+                noFill();
+                stroke(255, 245, 102);
+                strokeWeight(w / 7);
+                beginShape();
+
+                for (var i = 0; i < path.length; i++) {
+                    vertex(path[i].i * w + w / 2, path[i].j * h + h / 2);
+                }
+                success(path.length - 2);
+                endShape();
+                battery -= 0.5 * (path.length - 2);
+                display_battery();
+            } else {
+                battery_low();
+            }
             break;
+
         } else {
-            var neigh = grid[p.row][p.col].neighbours; // Contains Neighbour of Grid[i][j]
-            // Check in all the Direction of the Cell
+
+            var neigh = grid[p.row][p.col].neighbours;
+
+            //traversing through current cell's neighbours
             for (var i = 0; i < neigh.length; i++) {
 
-                var neighbor = neigh[i]; 
-                //If Cell is Not Visited or is Not A obstacle 
+                var neighbor = neigh[i];
+
+                //if not visited,visit it
                 if (!neighbor.visited) {
                     que.enqueue(new QItem(neighbor.i, neighbor.j, p.dist + 1));
                     neighbor.visited = true;
@@ -95,14 +116,14 @@ async function Dijkstra() {
                 }
             }
         }
+
+        //If path has not been found keep colouring the grid
         if (!check) {
 
-            //Colors the Cell to be Visited
             for (var i = 0; i < que.items.length; i++)
                 grid[que.items[i].row][que.items[i].col].showyou(color(177, 250, 82));
 
-            //Colors the Cell that are Visited
-            for (var i = 0; i < cSet.length; i++)
+            for (var i = 0; i < closedSet.length; i++)
                 grid[cSet[i].row][cSet[i].col].showyou(color(74, 247, 244));
 
             strt.showyou(color(0, 255, 0));
@@ -110,18 +131,21 @@ async function Dijkstra() {
             await sleep(5);
         }
     }
-    // if Failed to Found a Path
+
+    //If no path is found
     if (!check && que.isEmpty()) {
-        fail(); // Show a Message
+        fail();
         strt.showyou(color(0, 255, 0));
         end.showyou(color(255, 0, 0));
     }
-    //Algrihtm Ends!
-    //Make All Buttons Normal
+
+    //Enabling of Clear and Start button after Search completes.
     document.getElementById("clr").disabled = false;
     document.getElementById("strt").disabled = false;
-    document.getElementById("can").disabled = true;
 
-    //To not make any Modal on the First Click After the Algorihtm Ends
+    //Disabling of Cancel Search button after Search completes
+    document.getElementById("can").disabled = true;
     first_time = 3;
+
+    //end of Dijkstra Implementation :) 
 }

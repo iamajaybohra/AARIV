@@ -1,3 +1,6 @@
+//Queue and Priority Queue Implementation :)
+
+//Property of each Queue element
 class QItem {
     constructor(x, y, w) {
         this.row = x;
@@ -6,7 +9,9 @@ class QItem {
     }
 }
 
+//Implementation of Queue
 class Queue {
+
     //Array Is Used to Implement Queue 
     constructor() {
         this.items = [];
@@ -17,13 +22,13 @@ class Queue {
         this.items.push(element);
     }
 
-    //Dequeue function 
+    //Dequeue element 
     dequeue() {
         if (this.isEmpty()) return "Underflow";
         return this.items.shift();
     }
 
-    //Front function 
+    //Front Element 
     front() {
         if (this.isEmpty()) return "No elements in Queue";
         return this.items[0];
@@ -35,7 +40,7 @@ class Queue {
     }
 }
 
-
+//Property of each priority_queue element
 class queue_element {
     constructor(i, j) {
 
@@ -44,13 +49,14 @@ class queue_element {
     }
 }
 
-
+//Implementation of Priority Queue
 class priority_queue {
 
     constructor() {
         this.items = [];
     }
 
+    //Insert in queue
     enqueue(i, j) {
 
         var ele = new queue_element(i, j);
@@ -68,11 +74,13 @@ class priority_queue {
         }
     }
 
+    //Remove
     dequeue() {
 
         this.items.splice(0, 1);
     }
 
+    //Front Element
     front() {
         return this.items[0];
     }
@@ -82,19 +90,7 @@ class priority_queue {
     }
 }
 
-function success(c) {
-    swal({
-        title: "Congratulations!!",
-        text: "Found Path with length " + c,
-        icon: "success",
-        button: "OK",
-    });
-}
-function fail() {
-    swal({
-        title: "Sorry",
-        text: "No Path Found!",
-        icon: "error",
-        button: "no!",
-    });
-}
+//IMP:
+//The functions here have been declared in that manner other than
+//    isEmpty=function(){...}
+//because this syntax was causing error in Microsoft Edge.
