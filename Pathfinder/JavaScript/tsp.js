@@ -1,4 +1,5 @@
-//Travelling Salseman Problem Implementation
+//Travelling Salseman Problem Implementation Using Dynammic Programming(Held-Karp Method).Time Complexity:O(N*N*2^N)
+
 var distance;
 var pathorigin;
 var destination;
@@ -7,8 +8,10 @@ var path = [];
 var temp;
 var z = 0;
 
+
 class TSP {
 
+    //Initialising properties    
     constructor(strt, distance) {
         this.start_node = strt;
         this.distance = distance;
@@ -20,8 +23,12 @@ class TSP {
     }
 
     recursive_tsp(curr, state, memo, prev) {
+
+
         if (state == this.finish_state)
             return this.distance[curr][this.start_node];
+
+        //if computed in past,use that    
         if (memo[curr][state] != -1)
             return memo[curr][state];
 
@@ -35,11 +42,13 @@ class TSP {
             var nextState = (state | (1 << i));
             var newcost = this.distance[curr][i] + this.recursive_tsp(i, nextState, memo, prev);
 
+            //update minimum
             if (newcost < mincost) {
                 mincost = newcost;
                 index = i;
             }
         }
+
         prev[curr][state] = index;
         return memo[curr][state] = mincost;
     }
@@ -99,11 +108,14 @@ class TSP {
 function calc_dis() {
 
     var count = 2;
+
+    //stores all the cells which we have to visit,including strt node
     destination = [];
 
     destination.push(strt);
     destination.push(end);
 
+    //push all the cells to be visited in destination array
     for (var i = 0; i < col; i++) {
         for (var j = 0; j < row; j++)
             if (grid[i][j].end) {
@@ -111,8 +123,7 @@ function calc_dis() {
                 destination.push(grid[i][j]);
             }
     }
-    //console.log(count);
-    //console.log(destination);
+
     distance = new Array(count);
     pathorigin = new Array(count);
 
@@ -120,14 +131,14 @@ function calc_dis() {
         for (var j = 0; j < row; j++)
             grid[i][j].neighbours = [];
     }
-    //Storing neighbours of each cell in one of its property.Not considering diagonals
+
+
+    //Adding reachable neighbours of every cell.Why?.because the user may have added a new wall before running algo. 
     for (var i = 0; i < col; i++) {
         for (var j = 0; j < row; j++) {
-            grid[i][j].addneighbours(grid); //Refer to line 37
+            grid[i][j].addneighbours(grid);
         }
     }
-
-    //Creating a priority_queue instance
 
     for (var i = 0; i < col; i++) {
         for (var j = 0; j < row; j++) {
@@ -140,6 +151,7 @@ function calc_dis() {
     for (var i = 1; i < destination.length; i++)
         destination[i].showyou(color(255, 0, 0));
 
+    //Creating a 2D matrix for storing distance between each pair of cell(to be visited)
     for (var i = 0; i < count; i++)
         distance[i] = new Array(count);
 
@@ -151,6 +163,7 @@ function calc_dis() {
             pathorigin[i][j] = -1;
     }
 
+    //Initialising distance to Infinity
     for (var i = 0; i < count; i++) {
         for (var j = 0; j < count; j++) {
             if (i == j)
@@ -164,14 +177,17 @@ function calc_dis() {
 
 async function travellingsalesman() {
 
+    //First we need to find shortest distance between each pair of city.
+    //For this we have used A* algo to find shortest path and store it in the distance matrix
     for (var a = 0; a < destination.length; a++) {
 
         for (var b = 0; b < destination.length; b++) {
 
-
+            //We don't have to go the city from same city
             if (a == b)
                 continue;
 
+            //For calculating distance everytime,first we have to clear the previous effect on grid
             for (var i = 0; i < col; i++) {
                 for (var j = 0; j < row; j++) {
 
@@ -183,21 +199,30 @@ async function travellingsalesman() {
                 }
             }
 
-            var end = destination[b];
+            //Current Starting node : destination[a]
+            //Current Final node : destination[b]
+            var partial_end = destination[b];
+
+            //The code from here is same as A* algo implementation
+
+            //Creating a new priority_queue
             var pqueue = new priority_queue();
+
             destination[a].g = 0;
-            destination[a].f = Math.abs(destination[a].i - end.i) + Math.abs(destination[a].j - end.j);
+            destination[a].f = Math.abs(destination[a].i - partial_end.i) + Math.abs(destination[a].j - partial_end.j);
+            //Starting from the source
             pqueue.enqueue(destination[a].i, destination[a].j);
 
+            //While all the cells have been traversed or the END has been found 
             while (!pqueue.isEmpty()) {
 
                 var current = pqueue.front().element;
 
-                //if that unvisited cell is our destination
-                if (current === end) {
+                //path found
+                if (current === partial_end) {
                     check = true;
-                    //console.log("DONE!");
 
+                    //for storing the shortest path found,so that we don't have to calculate later on 
                     path[z] = new Array(1);
                     temp = current;
                     path[z].push(current);
@@ -206,16 +231,15 @@ async function travellingsalesman() {
                         path[z].push(temp.camefrom);
                         temp = temp.camefrom;
                     }
-
+                    //Storing the distance from city A to city B
                     distance[a][b] = path[z].length;
-                    //distance[b][a] = path[z].length;
+                    //storing at which index of path array ,the current path to go from A to B is stored
                     pathorigin[a][b] = z;
-                    //pathorigin[b][a] = z;
                     z++;
                     break;
-                    //for stopping the calling of draw() function again.
+
                 } else {
-                    //remove that current cell from openset as it has been visited
+
                     pqueue.dequeue();
 
                     //taking all the neighbors of current cell
@@ -223,7 +247,7 @@ async function travellingsalesman() {
 
                     for (var i = 0; i < neigh.length; i++) {
                         var neighbor = neigh[i];
-                        //if that neighbour is not in closed set,then we only need to visit
+                        //if that neighbour is not visited
                         if (!neighbor.visited) {
                             neighbor.visited = true;
                             var tempG = current.g + 1;
@@ -232,7 +256,7 @@ async function travellingsalesman() {
                                 neighbor.g = tempG;
                                 neighbor.camefrom = current;
                             }
-                            var temph = Math.abs(neighbor.i - end.i) + Math.abs(neighbor.j - end.j); //Math.sqrt((neighbor.i - end.i) * (neighbor.i - end.i) + (neighbor.j - end.j) * (neighbor.j - end.j)); //Math.abs(neighbor.i - end.i) + Math.abs(neighbor.j - end.j);
+                            var temph = Math.abs(neighbor.i - partial_end.i) + Math.abs(neighbor.j - partial_end.j); //Math.sqrt((neighbor.i - end.i) * (neighbor.i - end.i) + (neighbor.j - end.j) * (neighbor.j - end.j)); //Math.abs(neighbor.i - end.i) + Math.abs(neighbor.j - end.j);
                             var newcost = neighbor.g + temph;
 
                             if (newcost < neighbor.f) {
@@ -242,20 +266,22 @@ async function travellingsalesman() {
                             }
                         }
                     }
-                    //A* ends here   
+
                 }
+                //A* ends here
             }
-
         }
-
     }
     var obj = new TSP(0, distance);
-    var follow = [];
 
-    follow = obj.getTourCost();
-    //console.log(follow);
+    //for storing the shortest path to follow to visit all city
+    var shortest_path = [];
 
-    if (follow[follow.length - 1] == Infinity) {
+
+    shortest_path = obj.getTourCost();
+
+    //No common Path found 
+    if (shortest_path[shortest_path.length - 1] == Infinity) {
         swal({
             title: "Sorry!",
             text: "No common path found!!",
@@ -272,48 +298,63 @@ async function travellingsalesman() {
 
         beginShape();
 
-        for (var i = 0; i < follow.length - 2; i++) {
-            for (var j = path[pathorigin[follow[i]][follow[i + 1]]].length - 1; j >= 1; j--) {
-                path[pathorigin[follow[i]][follow[i + 1]]][j].showyou(color(0, 0, 255));
-                cnt++;
+        //Checking sufficient battery is there or not
+        if ((battery - (0.5 * (shortest_path[shortest_path.length - 1] - destination.length))) >= 0) {
 
-                destination[0].showyou(color(0, 255, 0));
+            for (var i = 0; i < shortest_path.length - 2; i++) {
 
-                for (var k = 1; k < destination.length; k++)
-                    destination[k].showyou(color(255, 0, 0));
+                //now using that path stored in path array.
+                for (var j = path[pathorigin[shortest_path[i]][shortest_path[i + 1]]].length - 1; j >= 1; j--) {
 
-                if (abort) {
-                    for (var i = 0; i < col; i++) {
-                        for (var j = 0; j < row; j++)
-                            grid[i][j].showyou(color(255));
+                    path[pathorigin[shortest_path[i]][shortest_path[i + 1]]][j].showyou(color(0, 0, 255));
+                    cnt++;
+
+                    destination[0].showyou(color(0, 255, 0));
+
+                    for (var k = 1; k < destination.length; k++)
+                        destination[k].showyou(color(255, 0, 0));
+
+                    if (abort) {
+
+                        for (var i = 0; i < col; i++) {
+                            for (var j = 0; j < row; j++)
+                                grid[i][j].showyou(color(255));
+                        }
+                        strt.showyou(color(0, 255, 0));
+                        end.showyou(color(255, 0, 0));
+                        break;
                     }
-                    strt.showyou(color(0, 255, 0));
-                    end.showyou(color(255, 0, 0));
-                    break;
+
+                    await sleep(100);
+                    path[pathorigin[shortest_path[i]][shortest_path[i + 1]]][j].showyou(color(74, 247, 244));
+
                 }
-
-                await sleep(100);
-                path[pathorigin[follow[i]][follow[i + 1]]][j].showyou(color(74, 247, 244));
-
+                if (abort)
+                    break;
             }
-            if (abort)
-                break;
-        }
-        endShape();
+            endShape();
 
-        destination[0].showyou(color(0, 255, 0));
+            destination[0].showyou(color(0, 255, 0));
 
-        for (var k = 1; k < destination.length; k++)
-            destination[k].showyou(color(255, 0, 0));
+            for (var k = 1; k < destination.length; k++)
+                destination[k].showyou(color(255, 0, 0));
 
-        if (!abort) {
-            cnt -= destination.length;
-            success(cnt);
+            if (!abort) {
+                cnt -= destination.length;
+                success(cnt);
+                battery -= 0.5 * shortest_path[shortest_path.length - 1];
+                display_battery();
+            }
+        } else {
+            battery_low();
         }
     }
+
     document.getElementById("clr").disabled = false;
     document.getElementById("strt").disabled = false;
     document.getElementById("can").disabled = true;
     first_time = 3;
     abort = false;
 }
+
+//Implementation Ends here
