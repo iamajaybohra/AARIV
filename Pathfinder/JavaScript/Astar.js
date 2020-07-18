@@ -15,7 +15,6 @@ async function Astar() {
 
             grid[i][j].g = Infinity;
             grid[i][j].f = Infinity;
-
             grid[i][j].visited = false;
             grid[i][j].camefrom = null;
             grid[i][j].neighbours = [];
@@ -71,20 +70,23 @@ async function Astar() {
             }
 
             //if enough battery is available
-            if (battery - (0.5 * (path.length - 1)) >= 0) {
+            if (new_battery - (0.5 * (path.length - 1)) >= 0) {
                 noFill();
                 stroke(255, 245, 102);
                 strokeWeight(w / 5);
                 beginShape();
                 for (var i = 0; i < path.length; i++) {
+                    old_battery = new_battery;
                     vertex(path[i].i * w + w / 2, path[i].j * h + h / 2);
                 }
                 endShape();
                 var c = path.length;
                 c--;
-                battery -= 0.5 * c;
+                old_battery = new_battery;
+                new_battery -= 0.5 * c;
                 success(c);
                 display_battery();
+
             } else {
                 battery_low();
             }

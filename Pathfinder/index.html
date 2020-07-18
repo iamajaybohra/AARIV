@@ -16,7 +16,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
         <link rel="stylesheet" href="style.css"/>
-        <link rel = "stylesheet" href = "buttons.css">
+        <!--<link rel = "stylesheet" href = "buttons.css">-->
         
     </head>
 
@@ -24,18 +24,17 @@
 
       <h1 id = "heading">PATHFINDER</h1>
         
-          <div id="battery" style="margin-bottom: 5px;">
+          <div id="battery">
               
-              <span  id = "Range" title="To know the farthest Mars Rover can travel with current Battery">
-                <input class = "hvr-float-shadow" type="button" onclick="Rem()" id="butt" value="Mars Rover Range"></input>
-              </span>
-              <label style="margin-left:2%; margin-right :2%;color:white;display:inline-block;font-size:20px">Battery  : </label>
+              <input  type="button" onclick="Rem()" style="height:35px;margin-left:100px;background-color: white;border-radius: 0.5em;" id="butt" value="Mars Rover Range"></input>
+              
+              <label style="margin-left:5%;color:white;display:inline-block;font-size:20px">Battery  : </label>
               
               <div id="myProgress">
                 <div id="myBar"></div>
               </div>
               
-              <button class = "hvr-float-shadow" onclick = "recharge()" style="width:100px;">Recharge</button>
+              <button  onclick = "recharge()" style="width:100px;">Recharge</button>
           </div>
           
           <div id="algorithm_panel" class="panel right_panel">
@@ -53,6 +52,11 @@
               
               <input type = "radio" id = "multi_dest" name = "algo" value = "multi_dest">
               <label for = "multi_dest">Multiple Destinations</label><br>
+              <div class="form-group">
+                <select class="form-control" id="multi-algorithm">
+                  <option value="HKA">Held-Karp Algorithm</option>
+                </select>
+              </div>
             <hr>
             <header><h2 class="header_title">Diagonals</h2></header>
             
@@ -100,7 +104,8 @@
             var first_time=3;
             var ok = false;
             var only=false;
-            var battery=100;
+            var old_battery=100;
+            var new_battery=100;
             
             var remin=true;
             display_battery();

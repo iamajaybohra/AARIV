@@ -299,7 +299,7 @@ async function travellingsalesman() {
         beginShape();
 
         //Checking sufficient battery is there or not
-        if ((battery - (0.5 * (shortest_path[shortest_path.length - 1] - destination.length))) >= 0) {
+        if ((new_battery - (0.5 * (shortest_path[shortest_path.length - 1] - destination.length))) >= 0) {
 
             for (var i = 0; i < shortest_path.length - 2; i++) {
 
@@ -342,7 +342,8 @@ async function travellingsalesman() {
             if (!abort) {
                 cnt -= destination.length;
                 success(cnt);
-                battery -= 0.5 * shortest_path[shortest_path.length - 1];
+                old_battery = new_battery;
+                new_battery -= 0.5 * shortest_path[shortest_path.length - 1];
                 display_battery();
             }
         } else {

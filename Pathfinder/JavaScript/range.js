@@ -3,6 +3,12 @@
 
 async function Rem() {
 
+    var xd = document.getElementsByName("algo");
+    if (xd[1].checked) {
+        swal("Finding Mars Range is practically not possible in Multiple Destinations Case ")
+        return;
+    }
+
     //Checking the value of Button .
     var elem = document.getElementById("butt");
 
@@ -47,12 +53,12 @@ async function Rem() {
     var que = new Queue();
     var cnt = 0;
     que.enqueue(new QItem(strt.i, strt.j, 0));
-    console.log(battery);
+
     while (!que.isEmpty()) {
         var p = que.front();
         que.dequeue();
 
-        if (p.dist > (2 * battery - 1)) continue;
+        if (p.dist > (2 * new_battery - 1)) continue;
         else {
             var neigh = grid[p.row][p.col].neighbours; // Contains Neighbour of Grid[i][j]
             // Check in all the Direction of the Cell
