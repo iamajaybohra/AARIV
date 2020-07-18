@@ -121,7 +121,7 @@ async function draw() {
     if (xd[0].checked) {
 
         document.getElementById("algorithm-panel").disabled = false;
-
+        document.getElementById("Range").style.display = "block";
         //If transferring from Multiple destinations to Single Destination Option,Clear the Grid
         if (only) {
 
@@ -139,6 +139,7 @@ async function draw() {
         }
     } else {
         only = true;
+        document.getElementById("Range").style.display = "none";
         document.getElementById("algorithm-panel").disabled = true;
     }
 
