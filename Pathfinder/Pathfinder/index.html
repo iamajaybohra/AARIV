@@ -7,12 +7,16 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Pathfinder</title>
-        
+        <header> 
+          <link rel="FaviconIcon" href="favicon.ico" type="image/x-icon">
+          <link rel="shortcut" href="favicon.ico" type="image/x-icon">
+        </header>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
         <link rel="stylesheet" href="style.css"/>
+        <link rel = "stylesheet" href = "buttons.css">
         
     </head>
 
@@ -20,15 +24,18 @@
 
       <h1 id = "heading">PATHFINDER</h1>
         
-          <div id="battery">
-              <span title="To know the farthest Mars Rover can travel with current Battery"><input type="button" onclick="Rem()" id="butt" style="radius:5px;background-color:white;margin-left:100px;width:150px;" value="Mars Rover Range"></input></span>
-              <label style="margin-left:5%;color:white;display:inline-block;font-size:20px">Battery:</label>
+          <div id="battery" style="margin-bottom: 5px;">
+              
+              <span  id = "Range" title="To know the farthest Mars Rover can travel with current Battery">
+                <input class = "hvr-float-shadow" type="button" onclick="Rem()" id="butt" value="Mars Rover Range"></input>
+              </span>
+              <label style="margin-left:2%; margin-right :2%;color:white;display:inline-block;font-size:20px">Battery  : </label>
               
               <div id="myProgress">
                 <div id="myBar"></div>
               </div>
               
-              <button onclick="recharge()" style="width:100px;">Recharge</button>
+              <button class = "hvr-float-shadow" onclick = "recharge()" style="width:100px;">Recharge</button>
           </div>
           
           <div id="algorithm_panel" class="panel right_panel">
