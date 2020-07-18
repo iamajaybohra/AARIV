@@ -22,6 +22,7 @@ class Cell {
         this.end = false;
         this.neighbours = [];
         this.camefrom = null;
+
     }
 
     //For displaying 
@@ -62,12 +63,15 @@ class Cell {
 
             if (i < col - 1 && j < row - 1 && grid[i + 1][j + 1].wall == false && !(grid[i + 1][j].wall == true && grid[i][j + 1].wall == true)) {
                 this.neighbours.push(grid[i + 1][j + 1]);
+
             }
             if (i > 0 && j > 0 && grid[i - 1][j - 1].wall == false && !(grid[i - 1][j].wall == true && grid[i][j - 1].wall == true)) {
                 this.neighbours.push(grid[i - 1][j - 1]);
+
             }
             if (i > 0 && j < row - 1 && grid[i - 1][j + 1].wall == false && !(grid[i - 1][j].wall == true && grid[i][j + 1].wall == true)) {
                 this.neighbours.push(grid[i - 1][j + 1]);
+
             }
             if (j > 0 && i < col - 1 && grid[i + 1][j - 1].wall == false && !(grid[i + 1][j].wall == true && grid[i][j - 1].wall == true)) {
                 this.neighbours.push(grid[i + 1][j - 1]);
@@ -119,9 +123,8 @@ async function draw() {
     var xd = document.getElementsByName("algo");
 
     if (xd[0].checked) {
-
         document.getElementById("algorithm-panel").disabled = false;
-        document.getElementById("Range").style.display = "block";
+        //document.getElementById("Range").style.display = "block";
         //If transferring from Multiple destinations to Single Destination Option,Clear the Grid
         if (only) {
 
@@ -139,7 +142,7 @@ async function draw() {
         }
     } else {
         only = true;
-        document.getElementById("Range").style.display = "none";
+        //document.getElementById("Range").style.display = "none";
         document.getElementById("algorithm-panel").disabled = true;
     }
 
@@ -183,14 +186,6 @@ function instruction() {
 
 }
 
-function remember() {
-    swal({
-        title: "Remember",
-        text: "Each traversal will cost some Battery Power.Recharge it before it runs out of power",
-        button: "OK",
-    });
-}
-
 //Reminder when Multiple Destinations is selected
 function remind() {
     swal({
@@ -212,10 +207,10 @@ function battery_low() {
 
 //Recharge battery
 function recharge() {
-    if (battery == 100) {
+    if (new_battery == 100) {
         swal("Battery Already Full!!");
     } else {
-        battery = 100;
+        new_battery = 100;
         display_battery();
     }
 }
@@ -226,24 +221,24 @@ function display_battery() {
     if (ii == 0) {
         ii = 1;
         var elem = document.getElementById("myBar");
-        var width = 0;
+        var width = old_battery;
         var id = setInterval(frame, 10);
 
-        if (battery <= 25)
-            elem.style.background = 'red';
-        else
-            elem.style.background = '#ADFF2F';
 
         function frame() {
-            elem.style.width = width + "%";
-            width++;
 
-            if (width > battery) {
+            if (width <= 25)
+                elem.style.background = 'red';
+            else
+                elem.style.background = '#ADFF2F';
+
+            elem.style.width = width + "%";
+            width--;
+
+            if (width <= new_battery) {
                 clearInterval(id);
                 ii = 0;
             }
-
-
         }
     }
 }

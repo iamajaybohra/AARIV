@@ -80,7 +80,7 @@ async function Dijkstra() {
             }
 
             //if enough battery is available,then traverse
-            if (battery - (0.5 * (path.length - 2)) >= 0) {
+            if (new_battery - (0.5 * (path.length - 2)) >= 0) {
 
                 noFill();
                 stroke(255, 245, 102);
@@ -92,7 +92,8 @@ async function Dijkstra() {
                 }
                 success(path.length - 2);
                 endShape();
-                battery -= 0.5 * (path.length - 2);
+                old_battery = new_battery;
+                new_battery -= 0.5 * (path.length - 2);
                 display_battery();
             } else {
                 battery_low();
@@ -124,7 +125,7 @@ async function Dijkstra() {
                 grid[que.items[i].row][que.items[i].col].showyou(color(177, 250, 82));
 
             for (var i = 0; i < closedSet.length; i++)
-                grid[cSet[i].row][cSet[i].col].showyou(color(74, 247, 244));
+                grid[closedSet[i].row][closedSet[i].col].showyou(color(74, 247, 244));
 
             strt.showyou(color(0, 255, 0));
             end.showyou(color(255, 0, 0));
