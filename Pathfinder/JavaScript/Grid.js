@@ -179,7 +179,7 @@ function fail() {
 //Instrunctions
 function instruction() {
     swal({
-        title: "Please Read!!",
+        title: ">>Mars Manual<<",
         text: "1.Click within the white grid and drag your mouse to draw obstacles.\n\n2.Drag the green node to set the start position.\n\n3.Drag the red node to set the end position.\n\n4.Selecting Single Destination( see Right Panel ) will find the shortest path between one source and one destination\n\n5.Select Algorithm from dropdown,if Single Destination option is selected\n\n6.Selecting Multiple Destinations( see Right Panel )will find the shortest path visiting every destination and returning to the source.\n\n7.Click Start Search in the right panel to start the animation.\n\n8.Click on the 'Mars Rover Range' Button (top left) to know the farthest distance Mars Rover can travel with current battery",
         button: "Let's Go",
     });
@@ -189,7 +189,7 @@ function instruction() {
 //Reminder when Multiple Destinations is selected
 function remind() {
     swal({
-        title: "Please Read!!",
+        title: ">>Mars Manual<<",
         text: "In Multiple Destinations Case: \n\n First Click on white Cell will convert it to a Wall\n\nSecond click on same cell will convert it into Destination\n\nThird Click will make it white Cell again",
         button: "Let's Go",
     });
