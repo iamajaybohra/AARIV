@@ -111,6 +111,7 @@ a {
 #heading {
     text-align: center;
     margin: 6px;
+    padding-right: 130px;
 }
 
 #cursor1 {
@@ -168,4 +169,8 @@ a {
     border-radius: 1.5em;
     /*align-items: center;*/
     background-color: #ADFF2F;
+}
+
+#butt{
+    margin-left: 15px;
 }

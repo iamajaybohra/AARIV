@@ -84,7 +84,7 @@ class Cell {
 function setup() {
 
     //Grid Canvas
-    createCanvas(1335, 585);
+    createCanvas(1250, 585);
 
     var canvas = document.getElementById("defaultCanvas0");
 
