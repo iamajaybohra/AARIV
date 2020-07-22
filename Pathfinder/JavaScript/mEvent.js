@@ -165,7 +165,7 @@ $(document).on("mousedown", function(event) {
                         var xc = Math.floor(mouseX / w);
                         var yc = Math.floor(mouseY / h);
                         cursor.style.left = xc * w + w + "px";
-                        cursor.style.top = yc * h + 4 * h + "px";
+                        cursor.style.top = yc * h + 4.2 * h + "px";
 
                     });
 
