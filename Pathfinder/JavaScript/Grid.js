@@ -211,6 +211,7 @@ function recharge() {
         swal("Battery Already Full!!");
     } else {
         new_battery = 100;
+        old_battery =100;
         display_battery();
     }
 }
