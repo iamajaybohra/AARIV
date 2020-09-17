@@ -66,7 +66,7 @@ async function Dijkstra() {
 
             var path = [];
             var temp = x;
-            path.push(x);
+            path.push(temp);
 
             //Extracting the minimum cost path
             while (true) {
